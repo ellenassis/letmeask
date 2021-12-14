@@ -10,10 +10,13 @@ import { AdminRoom } from './pages/AdminRoom';
 
 import { AuthContextProvider } from './contexts/AuthContext';
 
+import GlobalStyle from './styles/global';
+
 function App() {
   return (
     <BrowserRouter>
       <AuthContextProvider>
+        <GlobalStyle />
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/rooms/new" component={NewRoom} />

@@ -6,7 +6,7 @@
   aside {
     flex: 7;
 
-    background: #835afd;
+    background: #B088F9;
     color: #fff;
 
     display: flex;
@@ -86,7 +86,7 @@
       margin-top: 16px;
 
       a {
-        color: #e559f9;
+        color: #98ACF8;
       }
     }
   }
@@ -106,19 +106,20 @@
     height: 50px;
     border-radius: 8px;
     font-weight: 500;
-    background: #ea4335;
-    color: #fff;
+    background: #ffff;
+    color: black;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     cursor: pointer;
-    border: 0;
+    border: 1px solid #a8a8b3;
 
     transition: filter 0.2s;
 
     img {
+      width: 12%;
       margin-right: 8px;
     }
 
@@ -149,6 +150,14 @@
       height: 1px;
       background: #a8a8b3;
       margin-left: 16px;
+    }
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #page-auth {
+    aside {
+      display: none;
     }
   }
 }

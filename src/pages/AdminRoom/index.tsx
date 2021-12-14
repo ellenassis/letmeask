@@ -1,25 +1,26 @@
-import React, { useHistory, useParams, Link } from 'react-router-dom';
+import React from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
 import logoImg from '../../assets/images/logo.svg';
 import deleteImg from '../../assets/images/delete.svg';
 import checkImg from '../../assets/images/check.svg';
-import answering from '../../assets/images/answer.svg';
+import answerImg from '../../assets/images/answer.svg';
 
-import { Button } from '../../components/Button/index';
+import { Button } from '../../components/Button';
 import { Question } from '../../components/Question';
-import { RoomCode } from '../../components/RoomCode/index';
-//import { useAuth } from '../../hooks/useAuth';
+import { RoomCode } from '../../components/RoomCode';
+// import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../../hooks/useRoom';
+import { database } from '../../services/firebase';
 
 import '../Room/styles.scss';
-import { database } from '../../services/firebase';
 
 type RoomParams = {
   id: string;
 };
 
 export function AdminRoom() {
-  //const { user } = useAuth();
+  // const { user } = useAuth();
   const history = useHistory();
   const params = useParams<RoomParams>();
   const roomId = params.id;
@@ -27,23 +28,11 @@ export function AdminRoom() {
   const { title, questions } = useRoom(roomId);
 
   async function handleEndRoom() {
-    database.ref(`rooms/${roomId}`).update({
-      closedAt: new Date(),
+    await database.ref(`rooms/${roomId}`).update({
+      endedAt: new Date(),
     });
 
     history.push('/');
-  }
-
-  async function handleCheckQuestionAnswered(questionId: string) {
-    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
-      isAnswered: true,
-    });
-  }
-
-  async function handleHighlightQuestion(questionId: string) {
-    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
-      isHighLighted: true,
-    });
   }
 
   async function handleDeleteQuestion(questionId: string) {
@@ -52,13 +41,23 @@ export function AdminRoom() {
     }
   }
 
+  async function handleCheckQuestionAsAnswered(questionId: string) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isAnswered: true,
+    });
+  }
+
+  async function handleHighlightQuestion(questionId: string) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isHighlighted: true,
+    });
+  }
+
   return (
     <div id="page-room">
       <header>
         <div className="content">
-          <Link to="/">
-            <img src={logoImg} alt="" />
-          </Link>
+          <img src={logoImg} alt="Letmeask" />
           <div>
             <RoomCode code={roomId} />
             <Button isOutlined onClick={handleEndRoom}>
@@ -74,7 +73,7 @@ export function AdminRoom() {
           {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
 
-        <div className="question-lid">
+        <div className="question-list">
           {questions.map((question) => {
             return (
               <Question
@@ -88,23 +87,21 @@ export function AdminRoom() {
                   <>
                     <button
                       type="button"
-                      onClick={() => handleCheckQuestionAnswered(question.id)}
+                      onClick={() => handleCheckQuestionAsAnswered(question.id)}
                     >
                       <img
                         src={checkImg}
                         alt="Marcar pergunta como respondida"
                       />
                     </button>
-
                     <button
                       type="button"
                       onClick={() => handleHighlightQuestion(question.id)}
                     >
-                      <img src={answering} alt="Dar destaque a pergunta" />
+                      <img src={answerImg} alt="Dar destaque à pergunta" />
                     </button>
                   </>
                 )}
-
                 <button
                   type="button"
                   onClick={() => handleDeleteQuestion(question.id)}
