@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch } from 'react-router-dom';
 
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -10,13 +10,14 @@ import { AdminRoom } from './pages/AdminRoom';
 
 import { AuthContextProvider } from './contexts/AuthContext';
 
-import GlobalStyle from './styles/global';
+import './styles/global.scss';
 
 function App() {
+
   return (
-    <BrowserRouter>
+
+      <BrowserRouter>
       <AuthContextProvider>
-        <GlobalStyle />
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/rooms/new" component={NewRoom} />
@@ -26,6 +27,7 @@ function App() {
         </Switch>
       </AuthContextProvider>
     </BrowserRouter>
+  
   );
 }
 
